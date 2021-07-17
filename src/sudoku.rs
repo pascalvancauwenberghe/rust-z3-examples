@@ -50,8 +50,8 @@ impl<'a> Game<'a> {
 
         self.all_variables_must_have_value_between(&one, &nine);
         self.unique_values_in_rows();
-        Game::unique_values_in_columns(&&self.solver, &ctx, &&self.variables);
-        Game::unique_values_in_subgrids(&&self.solver, &ctx, &&self.variables);
+        self.unique_values_in_columns();
+        self.unique_values_in_subgrids();
     }
 
     fn all_variables_must_have_value_between(&self, one: &Int, nine: &Int) {
@@ -62,7 +62,7 @@ impl<'a> Game<'a> {
     }
 
     fn unique_values_in_row(&self, row: usize) {
-        let ctx = self.solver.get_context() ;
+        let ctx = self.solver.get_context();
         let mut cells = Vec::new();
         for col in 1..=9 {
             let cell = self.variables.get(Game::position_of(row, col)).unwrap();
@@ -73,43 +73,45 @@ impl<'a> Game<'a> {
 
     fn unique_values_in_rows(&self) {
         for row in 1..=9 {
-           self.unique_values_in_row(row);
+            self.unique_values_in_row(row);
         }
     }
 
-    fn unique_values_in_column(solver: &Solver, ctx: &Context, variables: &[Int], col: usize) {
+    fn unique_values_in_column(&self, col: usize) {
+        let ctx = self.solver.get_context();
         let mut cells = Vec::new();
         for row in 1..=9 {
-            let cell = variables.get(Game::position_of(row, col)).unwrap();
+            let cell = self.variables.get(Game::position_of(row, col)).unwrap();
             cells.push(cell);
         }
-        solver.assert(&Ast::distinct(ctx, &cells));
+        self.solver.assert(&Ast::distinct(ctx, &cells));
     }
 
-    fn unique_values_in_columns(solver: &Solver, ctx: &Context, variables: &[Int]) {
+    fn unique_values_in_columns(&self) {
         for col in 1..=9 {
-            Game::unique_values_in_column(solver, ctx, variables, col);
+            self.unique_values_in_column(col);
         }
     }
 
-    fn unique_values_in_subgrid(solver: &Solver, ctx: &Context, variables: &[Int], rowgrid: usize, colgrid: usize) {
+    fn unique_values_in_subgrid(&self, rowgrid: usize, colgrid: usize) {
+        let ctx = self.solver.get_context();
         let mut cells = Vec::new();
 
         for r in 1..=3 {
             for c in 1..=3 {
                 let cell_row = rowgrid + r;
                 let cell_col = colgrid + c;
-                let cell = variables.get(Game::position_of(cell_row, cell_col)).unwrap();
+                let cell = self.variables.get(Game::position_of(cell_row, cell_col)).unwrap();
                 cells.push(cell);
             }
         }
-        solver.assert(&Ast::distinct(ctx, &cells));
+        self.solver.assert(&Ast::distinct(ctx, &cells));
     }
 
-    fn unique_values_in_subgrids(solver: &Solver, ctx: &Context, variables: &[Int]) {
+    fn unique_values_in_subgrids(&self) {
         for rowgrid in 0..=2 {
             for colgrid in 0..=2 {
-                Game::unique_values_in_subgrid(solver, ctx, variables, rowgrid * 3, colgrid * 3);
+                self.unique_values_in_subgrid(rowgrid * 3, colgrid * 3);
             }
         }
     }
