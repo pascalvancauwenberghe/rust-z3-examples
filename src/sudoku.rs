@@ -45,19 +45,19 @@ impl<'a> Game<'a> {
 
     fn basic_sudoku_rules(&self) {
         let ctx = &self.solver.get_context();
-        let zero = ast::Int::from_i64(&ctx, 0);
-        let ten = ast::Int::from_i64(&ctx, 10);
+        let one = ast::Int::from_i64(&ctx, 1);
+        let nine = ast::Int::from_i64(&ctx, 9);
 
-        Game::valid_value_range(&&self.solver, &&self.variables, &zero, &ten);
+        self.all_variables_must_have_value_between(&one, &nine);
         Game::unique_values_in_rows(&&self.solver, &ctx, &&self.variables);
         Game::unique_values_in_columns(&&self.solver, &ctx, &&self.variables);
         Game::unique_values_in_subgrids(&&self.solver, &ctx, &&self.variables);
     }
 
-    fn valid_value_range(solver: &Solver, variables: &[Int], zero: &Int, ten: &Int) {
-        for variable in variables {
-            solver.assert(&variable.gt(zero));
-            solver.assert(&variable.lt(ten));
+    fn all_variables_must_have_value_between(&self, one: &Int, nine: &Int) {
+        for variable in self.variables.iter() {
+            self.solver.assert(&variable.ge(one));
+            self.solver.assert(&variable.le(nine));
         }
     }
 
