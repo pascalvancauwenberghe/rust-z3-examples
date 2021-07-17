@@ -1,7 +1,7 @@
-use z3::{Config, Context};
-use rust_z3_examples::sudoku::Game;
 use rust_z3_examples::games;
+use rust_z3_examples::sudoku::Game;
 use std::time::Instant;
+use z3::{Config, Context};
 
 fn main() {
     solve("easiest 1", games::easy_sudoku());
@@ -27,9 +27,7 @@ fn solve(name: &str, initial_values: &str) {
     } else {
         println!(
             "No solution for game '{}' in {} µs: {}",
-            game.name,
-            elapsed,
-            game
+            game.name, elapsed, game
         );
     }
 }

@@ -1,6 +1,6 @@
-use z3::{Solver, Context, SatResult, ast};
-use z3::ast::{Int, Ast};
 use std::fmt;
+use z3::ast::{Ast, Int};
+use z3::{ast, Context, SatResult, Solver};
 
 pub struct Game<'a> {
     pub name: String,
@@ -10,7 +10,10 @@ pub struct Game<'a> {
 
 impl<'a> Game<'a> {
     fn make_int_var(ctx: &Context, row: usize, col: usize) -> Int {
-        Int::new_const(&ctx, "cell".to_string() + &row.to_string() + &col.to_string())
+        Int::new_const(
+            &ctx,
+            "cell".to_string() + &row.to_string() + &col.to_string(),
+        )
     }
 
     fn position_of(row: usize, col: usize) -> usize {
@@ -101,7 +104,10 @@ impl<'a> Game<'a> {
             for c in 1..=3 {
                 let cell_row = rowgrid + r;
                 let cell_col = colgrid + c;
-                let cell = self.variables.get(Game::position_of(cell_row, cell_col)).unwrap();
+                let cell = self
+                    .variables
+                    .get(Game::position_of(cell_row, cell_col))
+                    .unwrap();
                 cells.push(cell);
             }
         }

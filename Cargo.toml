@@ -7,3 +7,10 @@ edition = "2018"
 
 [dependencies]
 z3 = {version="0.11.0", features = ["static-link-z3"]}
+
+[dev-dependencies]
+criterion = "0.3"
+
+[[bench]]
+name = "my_benchmark"
+harness = false
