@@ -49,7 +49,7 @@ impl<'a> Game<'a> {
         let nine = ast::Int::from_i64(&ctx, 9);
 
         self.all_variables_must_have_value_between(&one, &nine);
-        Game::unique_values_in_rows(&&self.solver, &ctx, &&self.variables);
+        self.unique_values_in_rows();
         Game::unique_values_in_columns(&&self.solver, &ctx, &&self.variables);
         Game::unique_values_in_subgrids(&&self.solver, &ctx, &&self.variables);
     }
@@ -61,18 +61,19 @@ impl<'a> Game<'a> {
         }
     }
 
-    fn unique_values_in_row(solver: &Solver, ctx: &Context, variables: &[Int], row: usize) {
+    fn unique_values_in_row(&self, row: usize) {
+        let ctx = self.solver.get_context() ;
         let mut cells = Vec::new();
         for col in 1..=9 {
-            let cell = variables.get(Game::position_of(row, col)).unwrap();
+            let cell = self.variables.get(Game::position_of(row, col)).unwrap();
             cells.push(cell);
         }
-        solver.assert(&Ast::distinct(ctx, &cells));
+        self.solver.assert(&Ast::distinct(ctx, &cells));
     }
 
-    fn unique_values_in_rows(solver: &Solver, ctx: &Context, variables: &[Int]) {
+    fn unique_values_in_rows(&self) {
         for row in 1..=9 {
-            Game::unique_values_in_row(solver, ctx, variables, row);
+           self.unique_values_in_row(row);
         }
     }
 
