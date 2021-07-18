@@ -16,7 +16,7 @@ impl<'a> Game<'a> {
         )
     }
 
-    fn position_of(row: usize, col: usize) -> usize {
+    pub fn position_of(row: usize, col: usize) -> usize {
         (row - 1) * 9 + (col - 1)
     }
 
@@ -44,6 +44,25 @@ impl<'a> Game<'a> {
     pub fn solve(&mut self) -> bool {
         let result = self.solver.check();
         result == SatResult::Sat
+    }
+
+    pub fn cage_of_3(&self, cell1: usize, cell2: usize, cell3: usize, sum: i64) {
+        let ctx = &self.solver.get_context();
+        let v1 = self.variables.get(cell1).unwrap();
+        let v2 = self.variables.get(cell2).unwrap();
+        let v3 = self.variables.get(cell3).unwrap();
+        let cage = ast::Int::add(&ctx, &[v1, v2, v3]);
+        self.solver.assert(&cage._eq(&ast::Int::from_i64(&ctx, sum)));
+        self.solver.assert(&Ast::distinct(&ctx, &[v1, v2, v3]));
+    }
+
+    pub fn cage_of_2(&self, cell1: usize, cell2: usize, sum: i64) {
+        let ctx = &self.solver.get_context();
+        let v1 = self.variables.get(cell1).unwrap();
+        let v2 = self.variables.get(cell2).unwrap();
+        let cage = ast::Int::add(&ctx, &[v1, v2]);
+        self.solver.assert(&cage._eq(&ast::Int::from_i64(&ctx, sum)));
+        self.solver.assert(&Ast::distinct(&ctx, &[v1, v2]));
     }
 
     fn basic_sudoku_rules(&self) {
