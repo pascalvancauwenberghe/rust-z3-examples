@@ -53,10 +53,22 @@ fn test_can_solve_notfun_sudoku() {
 fn test_can_solve_sudoku_with_cages() {
     let cfg = Config::new();
     let ctx = Context::new(&cfg);
-    let mut game = Game::new(&ctx, "sudoku with cages", sudoku_with_cages());
+    let mut game = Game::new(&ctx, "sudoku with cages", sudoku_without_numbers());
 
     add_cage_constraints(&mut game);
-    
+
     game.solve();
     assert_eq!(sudoku_with_cages_solution(), game.to_string());
+}
+
+#[test]
+fn test_can_solve_sudoku_with_thermos() {
+    let cfg = Config::new();
+    let ctx = Context::new(&cfg);
+    let mut game = Game::new(&ctx, "sudoku with thermos", sudoku_without_numbers());
+
+    add_thermo_constraints(&mut game);
+
+    game.solve();
+    assert_eq!(sudoku_with_thermos_solution(), game.to_string());
 }

@@ -142,7 +142,7 @@ pub fn not_fun_sudoku1_solution() -> &'static str {
 "#
 }
 
-pub fn sudoku_with_cages() -> &'static str {
+pub fn sudoku_without_numbers() -> &'static str {
     r#"
 .........
 .........
@@ -155,6 +155,7 @@ pub fn sudoku_with_cages() -> &'static str {
 "#
 }
 
+// Miracle Killer sudoku with cages https://www.youtube.com/watch?v=ejhtYYvUs5M
 pub fn sudoku_with_cages_solution() -> &'static str {
     r#"
 693154872
@@ -178,4 +179,33 @@ pub fn add_cage_constraints(game: &mut Game) {
     game.cage_of_2(Game::position_of(7, 3), Game::position_of(8, 3), 17);
     game.cage_of_2(Game::position_of(6, 9), Game::position_of(7, 9), 15);
     game.cage_of_2(Game::position_of(9, 6), Game::position_of(9, 7), 3);
+}
+
+// Gravity sudoku with Thermos https://www.youtube.com/watch?v=-kym5UAVA7I
+// A 'thermo(meter)' is a group of cells that must have strictly increasing digits, starting at the "bulb". For example:
+// 0 = = = =>
+// 2 3 4 5 6
+// 1 5 7 8 9
+pub fn add_thermo_constraints(game: &mut Game) {
+    game.thermo_3(Game::position_of(1, 4), Game::position_of(2, 3), Game::position_of(2, 2));
+    game.thermo_7(Game::position_of(1, 5), Game::position_of(1, 6), Game::position_of(2, 7), Game::position_of(3, 7), Game::position_of(3, 8), Game::position_of(4, 9), Game::position_of(5, 9));
+    game.thermo_4(Game::position_of(3, 4), Game::position_of(4, 5), Game::position_of(5, 6), Game::position_of(5, 7));
+    game.thermo_4(Game::position_of(4, 3), Game::position_of(5, 4), Game::position_of(6, 5), Game::position_of(7, 5));
+    game.thermo_4(Game::position_of(4, 8), Game::position_of(3, 9), Game::position_of(2, 9), Game::position_of(1, 9));
+    game.thermo_5(Game::position_of(6, 1), Game::position_of(7, 2), Game::position_of(7, 3), Game::position_of(8, 3), Game::position_of(9, 4));
+    game.thermo_5(Game::position_of(8, 5), Game::position_of(8, 4), Game::position_of(9, 3), Game::position_of(9, 2), Game::position_of(9, 1));
+}
+
+pub fn sudoku_with_thermos_solution() -> &'static str {
+    r#"
+645723189
+298165473
+731489562
+382954617
+457316928
+169278354
+523697841
+814532796
+976841235
+"#
 }

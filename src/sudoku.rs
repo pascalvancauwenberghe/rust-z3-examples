@@ -65,6 +65,41 @@ impl<'a> Game<'a> {
         self.solver.assert(&Ast::distinct(&ctx, &[v1, v2]));
     }
 
+    pub fn thermo_3(&self, bulb: usize, next1: usize, next2: usize) {
+        self.solver.assert(&self.variables.get(next1).unwrap().gt(self.variables.get(bulb).unwrap())) ;
+        self.solver.assert(&self.variables.get(next2).unwrap().gt(self.variables.get(next1).unwrap())) ;
+    }
+
+    pub fn thermo_4(&self, bulb: usize, next1: usize, next2: usize, next3: usize) {
+        self.solver.assert(&self.variables.get(next1).unwrap().gt(self.variables.get(bulb).unwrap())) ;
+        self.solver.assert(&self.variables.get(next2).unwrap().gt(self.variables.get(next1).unwrap())) ;
+        self.solver.assert(&self.variables.get(next3).unwrap().gt(self.variables.get(next2).unwrap())) ;
+    }
+
+    pub fn thermo_5(&self, bulb: usize, next1: usize, next2: usize, next3: usize, next4: usize) {
+        self.solver.assert(&self.variables.get(next1).unwrap().gt(self.variables.get(bulb).unwrap())) ;
+        self.solver.assert(&self.variables.get(next2).unwrap().gt(self.variables.get(next1).unwrap())) ;
+        self.solver.assert(&self.variables.get(next3).unwrap().gt(self.variables.get(next2).unwrap())) ;
+        self.solver.assert(&self.variables.get(next4).unwrap().gt(self.variables.get(next3).unwrap())) ;
+    }
+
+    pub fn thermo_6(&self, bulb: usize, next1: usize, next2: usize, next3: usize, next4: usize, next5: usize) {
+        self.solver.assert(&self.variables.get(next1).unwrap().gt(self.variables.get(bulb).unwrap())) ;
+        self.solver.assert(&self.variables.get(next2).unwrap().gt(self.variables.get(next1).unwrap())) ;
+        self.solver.assert(&self.variables.get(next3).unwrap().gt(self.variables.get(next2).unwrap())) ;
+        self.solver.assert(&self.variables.get(next4).unwrap().gt(self.variables.get(next3).unwrap())) ;
+        self.solver.assert(&self.variables.get(next5).unwrap().gt(self.variables.get(next4).unwrap())) ;
+    }
+
+    pub fn thermo_7(&self, bulb: usize, next1: usize, next2: usize, next3: usize, next4: usize, next5: usize, next6: usize) {
+        self.solver.assert(&self.variables.get(next1).unwrap().gt(self.variables.get(bulb).unwrap())) ;
+        self.solver.assert(&self.variables.get(next2).unwrap().gt(self.variables.get(next1).unwrap())) ;
+        self.solver.assert(&self.variables.get(next3).unwrap().gt(self.variables.get(next2).unwrap())) ;
+        self.solver.assert(&self.variables.get(next4).unwrap().gt(self.variables.get(next3).unwrap())) ;
+        self.solver.assert(&self.variables.get(next5).unwrap().gt(self.variables.get(next4).unwrap())) ;
+        self.solver.assert(&self.variables.get(next6).unwrap().gt(self.variables.get(next5).unwrap())) ;
+    }
+
     fn basic_sudoku_rules(&self) {
         let ctx = &self.solver.get_context();
         let one = ast::Int::from_i64(&ctx, 1);
