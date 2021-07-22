@@ -1,5 +1,5 @@
 use criterion::{criterion_group, criterion_main, Criterion};
-use rust_z3_examples::games::{difficult_sudoku1, not_fun_sudoku1, add_cage_constraints};
+use rust_z3_examples::games::{add_cage_constraints, difficult_sudoku1, not_fun_sudoku1};
 use rust_z3_examples::sudoku::Game;
 use z3::{Config, Context};
 
@@ -42,5 +42,10 @@ fn caged_benchmark(c: &mut Criterion) {
     c.bench_function("caged", |b| b.iter(|| solve_cagedsudoku()));
 }
 
-criterion_group!(benches, notfun_benchmark, difficult_benchmark,caged_benchmark);
+criterion_group!(
+    benches,
+    notfun_benchmark,
+    difficult_benchmark,
+    caged_benchmark
+);
 criterion_main!(benches);
